@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artemisa English — Tu tutora de inglés con IA, 100% privada y offline</title>
+<meta name="description" content="Aprende inglés con una tutora de IA por voz que funciona 100% en tu PC, sin internet y sin que tus datos salgan de tu equipo. Para Windows.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#060910; --bg2:#0a1018; --panel:#0d1622; --line:rgba(120,200,255,.12);
+    --cyan:#34e0ff; --cyan-deep:#0a8fb5; --ink:#e8f4ff; --muted:#8aa3bd;
+    --gold:#ffd24a; --green:#5dffa0;
+    --display:"Bricolage Grotesque",serif; --body:"Manrope",sans-serif;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink); font-family:var(--body);
+    line-height:1.6; overflow-x:hidden; -webkit-font-smoothing:antialiased;
+  }
+  /* Atmósfera: destellos radiales + grano */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
+    background:
+      radial-gradient(60vw 50vh at 75% -5%, rgba(52,224,255,.16), transparent 60%),
+      radial-gradient(50vw 50vh at 10% 15%, rgba(20,120,180,.14), transparent 55%),
+      radial-gradient(45vw 45vh at 90% 95%, rgba(255,210,74,.07), transparent 60%),
+      linear-gradient(180deg,#060910,#070c14 40%,#05080f);
+  }
+  body::after{
+    content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.04;letter-spacing:-.02em}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
+    background:rgba(6,9,16,.6);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.02em}
+  .brand .dot{width:22px;height:22px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#bff4ff,var(--cyan) 45%,var(--cyan-deep) 100%);
+    box-shadow:0 0 18px rgba(52,224,255,.7)}
+  .nav-links{display:flex;gap:28px;align-items:center;font-size:14.5px;color:var(--muted)}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links .nav-cta{color:var(--bg);background:var(--cyan);padding:9px 18px;border-radius:999px;font-weight:700;
+    box-shadow:0 0 22px rgba(52,224,255,.35)}
+  .nav-links .nav-cta:hover{filter:brightness(1.08);color:var(--bg)}
+  @media(max-width:760px){.nav-links a:not(.nav-cta){display:none}}
+
+  /* HERO */
+  header{position:relative;text-align:center;padding:96px 0 60px}
+  .orb{width:240px;height:240px;margin:0 auto 38px;position:relative}
+  .orb .core{position:absolute;inset:0;border-radius:50%;
+    background:radial-gradient(circle at 38% 32%, #d6f7ff 0%, #46e3ff 30%, #0d8fc0 62%, #053b54 100%);
+    box-shadow:0 0 70px rgba(52,224,255,.55), inset 0 0 60px rgba(0,30,50,.5);
+    animation:breathe 6s ease-in-out infinite}
+  .orb .ring{position:absolute;inset:-22px;border-radius:50%;border:1px solid rgba(52,224,255,.35);animation:spin 14s linear infinite}
+  .orb .ring.r2{inset:-46px;border-color:rgba(52,224,255,.18);animation-duration:22s;animation-direction:reverse}
+  .orb .glow{position:absolute;inset:-60px;border-radius:50%;
+    background:radial-gradient(circle,rgba(52,224,255,.22),transparent 65%);filter:blur(6px);animation:breathe 6s ease-in-out infinite}
+  #orb-canvas{position:absolute;inset:-30px}
+  #orb-canvas canvas{width:100%!important;height:100%!important;display:block}
+  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--cyan);border:1px solid var(--line);padding:7px 16px;border-radius:999px;background:rgba(52,224,255,.06);margin-bottom:26px}
+  h1.hero{font-size:clamp(40px,7vw,82px);max-width:14ch;margin:0 auto}
+  h1.hero em{font-style:normal;color:var(--cyan);text-shadow:0 0 40px rgba(52,224,255,.45)}
+  .sub{max-width:60ch;margin:24px auto 0;color:var(--muted);font-size:clamp(16px,2.2vw,20px)}
+  .cta-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:38px}
+  .btn{font-family:var(--body);font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px;cursor:pointer;border:1px solid transparent;transition:.18s;display:inline-flex;align-items:center;gap:10px}
+  .btn-primary{background:var(--cyan);color:#04222e;box-shadow:0 0 34px rgba(52,224,255,.4)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(52,224,255,.55)}
+  .btn-ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--cyan);background:rgba(52,224,255,.06)}
+  .trust{margin-top:34px;display:flex;gap:26px;justify-content:center;flex-wrap:wrap;color:var(--muted);font-size:14px}
+  .trust b{color:var(--ink);font-weight:600}
+
+  /* SECTIONS */
+  section{padding:80px 0;position:relative}
+  .sec-head{text-align:center;max-width:60ch;margin:0 auto 52px}
+  .sec-head h2{font-size:clamp(30px,4.5vw,48px)}
+  .sec-head p{color:var(--muted);margin-top:16px;font-size:18px}
+  .kicker{color:var(--cyan);font-size:13px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;display:block;margin-bottom:14px}
+
+  /* DIFERENCIADORES */
+  .diff{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .diff .card{background:linear-gradient(160deg,var(--panel),rgba(13,22,34,.4));border:1px solid var(--line);
+    border-radius:18px;padding:28px 24px;transition:.2s}
+  .diff .card:hover{transform:translateY(-4px);border-color:rgba(52,224,255,.4);box-shadow:0 14px 40px rgba(0,0,0,.4)}
+  .diff .ic{font-size:26px;width:52px;height:52px;display:grid;place-items:center;border-radius:14px;
+    background:rgba(52,224,255,.1);border:1px solid var(--line);margin-bottom:18px}
+  .diff h3{font-size:19px;margin-bottom:8px}
+  .diff p{color:var(--muted);font-size:14.5px}
+  @media(max-width:900px){.diff{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.diff{grid-template-columns:1fr}}
+
+  /* FEATURES */
+  .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .feat .f{display:flex;gap:15px;align-items:flex-start;padding:20px;border-radius:14px;border:1px solid var(--line);
+    background:rgba(13,22,34,.45)}
+  .feat .f .e{font-size:24px;line-height:1}
+  .feat .f h4{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:3px}
+  .feat .f p{color:var(--muted);font-size:13.5px}
+  @media(max-width:840px){.feat{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.feat{grid-template-columns:1fr}}
+
+  /* PRICING */
+  .plans{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-items:stretch}
+  .plan{background:linear-gradient(170deg,var(--panel),rgba(10,16,24,.5));border:1px solid var(--line);
+    border-radius:20px;padding:30px 24px;display:flex;flex-direction:column;position:relative;transition:.2s}
+  .plan:hover{transform:translateY(-5px);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+  .plan.pop{border-color:rgba(52,224,255,.55);box-shadow:0 0 38px rgba(52,224,255,.18)}
+  .plan.prem{border-color:rgba(255,210,74,.5);background:linear-gradient(170deg,#161204,rgba(20,16,4,.5))}
+  .tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:11.5px;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;padding:5px 14px;border-radius:999px}
+  .tag.cy{background:var(--cyan);color:#04222e}
+  .tag.go{background:var(--gold);color:#2a1f00}
+  .plan h3{font-size:22px;margin-bottom:4px}
+  .plan .price{font-family:var(--display);font-size:34px;font-weight:800;margin:10px 0 2px;letter-spacing:-.02em}
+  .plan .price small{font-size:14px;color:var(--muted);font-weight:500}
+  .plan.prem .price{color:var(--gold)}
+  .plan .per{color:var(--muted);font-size:13px;margin-bottom:20px}
+  .plan ul{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:26px;flex:1}
+  .plan li{font-size:14px;color:#cfe1f2;display:flex;gap:9px;align-items:flex-start}
+  .plan li::before{content:"✓";color:var(--cyan);font-weight:800}
+  .plan.prem li::before{color:var(--gold)}
+  .plan .buy{margin-top:auto;text-align:center;font-weight:700;padding:13px;border-radius:12px;border:1px solid var(--line);transition:.18s;cursor:pointer;background:transparent;color:var(--ink);font-family:var(--body);font-size:15px}
+  .plan .buy:hover{border-color:var(--cyan);background:rgba(52,224,255,.08)}
+  .plan.pop .buy{background:var(--cyan);color:#04222e;border-color:var(--cyan)}
+  .plan.pop .buy:hover{filter:brightness(1.08)}
+  .plan.prem .buy{background:var(--gold);color:#2a1f00;border-color:var(--gold)}
+  .trial-note{text-align:center;margin-top:26px;color:var(--muted);font-size:15px}
+  .trial-note b{color:var(--green)}
+  @media(max-width:980px){.plans{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.plans{grid-template-columns:1fr}}
+
+  /* HARDWARE */
+  .hw{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:rgba(13,22,34,.4)}
+  table{border-collapse:collapse;width:100%;min-width:620px;font-size:14.5px}
+  th,td{padding:15px 18px;text-align:left;border-bottom:1px solid var(--line)}
+  thead th{font-family:var(--display);font-weight:600;color:var(--ink);background:rgba(52,224,255,.05)}
+  tbody th{color:var(--muted);font-weight:500;font-family:var(--body)}
+  td.best{color:var(--cyan)}
+  tr:last-child td,tr:last-child th{border-bottom:none}
+
+  /* CTA */
+  .final{text-align:center;border:1px solid var(--line);border-radius:28px;padding:64px 24px;
+    background:radial-gradient(70% 120% at 50% 0%,rgba(52,224,255,.12),transparent 70%),var(--panel)}
+  .final h2{font-size:clamp(30px,5vw,52px);max-width:18ch;margin:0 auto 18px}
+  .final p{color:var(--muted);max-width:50ch;margin:0 auto 32px;font-size:17px}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--line);margin-top:90px;padding:48px 0 60px;color:var(--muted);font-size:14px}
+  .foot{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+  .foot .brand{color:var(--ink);margin-bottom:12px}
+  .foot-links{display:flex;gap:22px;flex-wrap:wrap}
+  .foot-links a:hover{color:var(--cyan)}
+  .foot small{display:block;margin-top:18px}
+
+  /* Reveal on scroll */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  [data-d="1"]{transition-delay:.08s}[data-d="2"]{transition-delay:.16s}[data-d="3"]{transition-delay:.24s}[data-d="4"]{transition-delay:.32s}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <div class="brand"><span class="dot"></span> Artemisa English</div>
+    <div class="nav-links">
+      <a href="#features">Funciones</a>
+      <a href="#planes">Planes</a>
+      <a href="#requisitos">Requisitos</a>
+      <a href="#descargar" class="nav-cta">Descargar gratis</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <div class="orb">
+      <div class="glow"></div>
+      <div id="orb-canvas"></div>
+    </div>
+    <span class="eyebrow reveal">● Tutora de inglés con IA · para Windows</span>
+    <h1 class="hero reveal" data-d="1">Aprende inglés hablando con <em>Artemisa</em></h1>
+    <p class="sub reveal" data-d="2">Una tutora de inteligencia artificial que te escucha, te corrige y conversa contigo por voz — funcionando <b style="color:var(--ink)">100% en tu computador</b>, sin internet y sin que tus datos salgan de tu equipo.</p>
+    <div class="cta-row reveal" data-d="3">
+      <a href="#descargar" class="btn btn-primary">⬇ Descargar gratis</a>
+      <a href="#planes" class="btn btn-ghost">Ver planes</a>
+    </div>
+    <div class="trust reveal" data-d="4">
+      <span>🔒 <b>100% privado</b></span>
+      <span>📡 <b>Funciona sin internet</b></span>
+      <span>🎙️ <b>Tutora por voz</b></span>
+      <span>🎁 <b>14 días Pro gratis</b></span>
+    </div>
+  </div>
+</header>
+
+<section id="why">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Por qué Artemisa</span>
+      <h2>No es otra app de idiomas</h2>
+      <p>La inteligencia artificial corre en tu propio PC. Eso lo cambia todo.</p>
+    </div>
+    <div class="diff">
+      <div class="card reveal" data-d="1"><div class="ic">🔒</div><h3>Privacidad total</h3><p>Tus conversaciones y tu progreso nunca salen de tu computador. Nada en la nube.</p></div>
+      <div class="card reveal" data-d="2"><div class="ic">📡</div><h3>100% offline</h3><p>Después de instalar, aprende sin internet. En el bus, en el campo, donde sea.</p></div>
+      <div class="card reveal" data-d="3"><div class="ic">🎙️</div><h3>Conversación real</h3><p>Habla y Artemisa te responde con voz, te corrige la pronunciación y te explica el porqué.</p></div>
+      <div class="card reveal" data-d="4"><div class="ic">🌐</div><h3>Traductor en vivo</h3><p>Traduce en tiempo real el audio de tu PC (YouTube, Zoom) o tu propia voz.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Todo en una</span>
+      <h2>Practica las cuatro habilidades</h2>
+      <p>Conversación, escucha, lectura, escritura, gramática y mucho más — todo por voz.</p>
+    </div>
+    <div class="feat">
+      <div class="f reveal" data-d="1"><span class="e">💬</span><div><h4>Hablar</h4><p>Conversación libre con corrección en tiempo real.</p></div></div>
+      <div class="f reveal" data-d="1"><span class="e">👂</span><div><h4>Escuchar</h4><p>Pasajes a tu nivel y dictados con dificultad ajustable.</p></div></div>
+      <div class="f reveal" data-d="2"><span class="e">📖</span><div><h4>Leer</h4><p>Lecturas con preguntas y vocabulario interactivo.</p></div></div>
+      <div class="f reveal" data-d="2"><span class="e">✍️</span><div><h4>Escribir</h4><p>Plantillas por género y ciclo de reescritura guiado.</p></div></div>
+      <div class="f reveal" data-d="3"><span class="e">🎓</span><div><h4>Ejercicios</h4><p>Opción múltiple, completar, ordenar y "escribe lo que oyes".</p></div></div>
+      <div class="f reveal" data-d="3"><span class="e">🧠</span><div><h4>Tarjetas</h4><p>Repaso inteligente (FSRS) que se adapta a tu memoria.</p></div></div>
+      <div class="f reveal" data-d="4"><span class="e">📐</span><div><h4>Gramática</h4><p>Artemisa te explica hablando, con el porqué de cada regla.</p></div></div>
+      <div class="f reveal" data-d="4"><span class="e">🗺️</span><div><h4>Modo Arcade</h4><p>Un mapa de mundos por nivel para avanzar jugando.</p></div></div>
+      <div class="f reveal" data-d="4"><span class="e">🌐</span><div><h4>Traductor en vivo</h4><p>Subtítulos y voz traducida del audio de tu sistema.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="planes">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Planes</span>
+      <h2>Empieza gratis. Mejora cuando quieras.</h2>
+      <p>Al instalar recibes <b style="color:var(--green)">14 días de Pro gratis</b>. Sin tarjeta, sin compromiso.</p>
+    </div>
+    <div class="plans">
+      <div class="plan reveal" data-d="1">
+        <h3>Lite</h3>
+        <div class="price">Gratis</div>
+        <div class="per">para siempre</div>
+        <ul>
+          <li>Conversación + escucha</li>
+          <li>30 minutos al día</li>
+          <li>Inglés ↔ Español</li>
+        </ul>
+        <button class="buy">Descargar</button>
+      </div>
+      <div class="plan pop reveal" data-d="2">
+        <span class="tag cy">Más popular</span>
+        <h3>Standard</h3>
+        <div class="price">$290.000<small> /año</small></div>
+        <div class="per">1 equipo</div>
+        <ul>
+          <li>Todo lo de Lite, sin límite de tiempo</li>
+          <li>Leer, escribir, ejercicios y tarjetas</li>
+          <li>Modo Arcade y reportes de progreso</li>
+        </ul>
+        <button class="buy">Comprar Standard</button>
+      </div>
+      <div class="plan reveal" data-d="3">
+        <h3>Pro</h3>
+        <div class="price">$590.000<small> /año</small></div>
+        <div class="per">hasta 3 equipos</div>
+        <ul>
+          <li>Todo lo de Standard</li>
+          <li>Traductor en vivo</li>
+          <li>Clonado de voz</li>
+        </ul>
+        <button class="buy">Comprar Pro</button>
+      </div>
+      <div class="plan prem reveal" data-d="4">
+        <span class="tag go">De por vida</span>
+        <h3>Premium</h3>
+        <div class="price">$1.500.000</div>
+        <div class="per">pago único · 1 equipo</div>
+        <ul>
+          <li>Todo lo de Pro, para siempre</li>
+          <li>Actualizaciones de por vida</li>
+          <li>Sin renovaciones anuales</li>
+        </ul>
+        <button class="buy">Comprar Premium</button>
+      </div>
+    </div>
+    <p class="trial-note">💡 Los idiomas nuevos (francés, portugués, italiano…) llegarán como <b>expansiones</b> que se suman a tu plan.</p>
+  </div>
+</section>
+
+<section id="requisitos">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Requisitos</span>
+      <h2>¿Funciona en mi PC?</h2>
+      <p>Artemisa detecta tu equipo y ajusta la IA automáticamente. La tarjeta gráfica (GPU) marca la diferencia.</p>
+    </div>
+    <div class="hw reveal">
+      <table>
+        <thead><tr><th>Componente</th><th>Mínimo</th><th>Recomendado</th><th>Óptimo</th></tr></thead>
+        <tbody>
+          <tr><th>Sistema</th><td>Windows 10/11</td><td>Windows 11</td><td class="best">Windows 11</td></tr>
+          <tr><th>Procesador</th><td>4 núcleos</td><td>6 núcleos</td><td class="best">8 núcleos (Ryzen 7 / i7)</td></tr>
+          <tr><th>RAM</th><td>8 GB</td><td>16 GB</td><td class="best">32–64 GB</td></tr>
+          <tr><th>Tarjeta gráfica</th><td>Sin GPU (usa CPU, más lento)</td><td>NVIDIA 8–12 GB</td><td class="best">NVIDIA ≥12 GB (RTX 4060 Ti / 4070)</td></tr>
+          <tr><th>Disco</th><td>~15 GB SSD</td><td>~20 GB SSD</td><td class="best">~30 GB SSD NVMe</td></tr>
+          <tr><th>Internet</th><td colspan="3">Solo la primera vez (descarga de modelos). Después, 100% offline.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="descargar">
+  <div class="wrap">
+    <div class="final reveal">
+      <h2>Tu profesora de inglés, en tu propio PC</h2>
+      <p>Descarga Artemisa y prueba 14 días de Pro gratis. Sin nube, sin espías, sin excusas.</p>
+      <div class="cta-row" style="margin-top:8px">
+        <a href="#" class="btn btn-primary">⬇ Descargar para Windows</a>
+        <a href="#planes" class="btn btn-ghost">Ver planes y precios</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <div class="brand"><span class="dot"></span> Artemisa English</div>
+      <div>Tutora de inglés con IA · 100% local y privada.</div>
+      <small>© 2026 Víctor Alfonso Fernández Hoyos · Cali, Colombia · NIT 1143841943-9</small>
+    </div>
+    <div>
+      <div class="foot-links">
+        <a href="#">Términos</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Devoluciones</a>
+        <a href="#">Propiedad intelectual</a>
+      </div>
+      <small>Contacto: victoralfonsofernandezhoyos@gmail.com</small>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Revelado al hacer scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.14});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  // Hero visible de una
+  window.addEventListener('load',()=>{document.querySelectorAll('header .reveal').forEach(el=>el.classList.add('in'));});
+</script>
+
+<!-- Orbe de Artemisa: mismos shaders que la app (ArtemisaOrb) — gota de agua + anillo cyan -->
+<script type="module">
+  import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js';
+  const VERT = `
+    varying vec3 vNormal; varying vec3 vPos; varying float vDisp;
+    uniform float uTime; uniform float uLevel; uniform float uState;
+    vec4 permute(vec4 x){ return mod(((x*34.0)+1.0)*x, 289.0); }
+    vec4 taylorInvSqrt(vec4 r){ return 1.79284291400159 - 0.85373472095314 * r; }
+    float snoise(vec3 v){
+      const vec2 C = vec2(1.0/6.0, 1.0/3.0); const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+      vec3 i = floor(v + dot(v, C.yyy)); vec3 x0 = v - i + dot(i, C.xxx);
+      vec3 g = step(x0.yzx, x0.xyz); vec3 l = 1.0 - g;
+      vec3 i1 = min(g.xyz, l.zxy); vec3 i2 = max(g.xyz, l.zxy);
+      vec3 x1 = x0 - i1 + C.xxx; vec3 x2 = x0 - i2 + C.yyy; vec3 x3 = x0 - D.yyy;
+      i = mod(i, 289.0);
+      vec4 p = permute( permute( permute(
+                i.z + vec4(0.0, i1.z, i2.z, 1.0))
+              + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+              + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+      float n_ = 1.0/7.0; vec3 ns = n_ * D.wyz - D.xzx;
+      vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+      vec4 x_ = floor(j * ns.z); vec4 y_ = floor(j - 7.0 * x_);
+      vec4 x = x_ * ns.x + ns.yyyy; vec4 y = y_ * ns.x + ns.yyyy;
+      vec4 h = 1.0 - abs(x) - abs(y);
+      vec4 b0 = vec4(x.xy, y.xy); vec4 b1 = vec4(x.zw, y.zw);
+      vec4 s0 = floor(b0)*2.0 + 1.0; vec4 s1 = floor(b1)*2.0 + 1.0;
+      vec4 sh = -step(h, vec4(0.0));
+      vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy; vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+      vec3 p0 = vec3(a0.xy, h.x); vec3 p1 = vec3(a0.zw, h.y);
+      vec3 p2 = vec3(a1.xy, h.z); vec3 p3 = vec3(a1.zw, h.w);
+      vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+      p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+      vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0); m = m * m;
+      return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+    }
+    void main() {
+      vNormal = normal;
+      float idleAmp = 0.012; float reactiveAmp = uLevel * 0.30; float baseAmp = idleAmp + reactiveAmp;
+      float speed = 0.5 + uLevel * 1.5;
+      float n  = snoise(normal * 2.2 + vec3(uTime * speed));
+      float n2 = snoise(normal * 5.0 - vec3(uTime * speed * 0.7));
+      float disp = n * baseAmp + n2 * baseAmp * 0.45; vDisp = disp;
+      vec3 displaced = position + normal * disp; vPos = displaced;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
+    }
+  `;
+  const FRAG = `
+    varying vec3 vNormal; varying vec3 vPos; varying float vDisp;
+    uniform float uTime; uniform float uLevel; uniform float uState;
+    void main() {
+      vec3 cIdle = vec3(0.16, 0.55, 0.95);
+      vec3 stateCol = cIdle;
+      vec3 viewDir = normalize(cameraPosition - vPos);
+      float fres = pow(1.0 - max(dot(normalize(vNormal), viewDir), 0.0), 2.0);
+      vec3 core = mix(stateCol * 0.4, stateCol, 0.4 + vDisp * 2.0);
+      vec3 rim  = stateCol * (1.4 + uLevel * 1.5);
+      vec3 col  = mix(core, rim, fres);
+      float pulse = 0.5 + 0.5 * sin(uTime * 1.5);
+      col += stateCol * 0.15 * pulse * fres;
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `;
+  const mount = document.getElementById('orb-canvas');
+  if (mount) {
+    let w = mount.clientWidth || 300, h = mount.clientHeight || 300;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, w/h, 0.1, 100); camera.position.z = 3.4;
+    const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(w, h); renderer.setClearColor(0x000000, 0);
+    mount.appendChild(renderer.domElement);
+    const uniforms = { uTime:{value:0}, uLevel:{value:0}, uState:{value:0} };
+    const geo = new THREE.IcosahedronGeometry(1, 64);
+    const mat = new THREE.ShaderMaterial({ uniforms, vertexShader:VERT, fragmentShader:FRAG });
+    const sphere = new THREE.Mesh(geo, mat); scene.add(sphere);
+    const ringGeo = new THREE.RingGeometry(1.45, 1.5, 96);
+    const ringMat = new THREE.MeshBasicMaterial({ color:0x00d4ff, side:THREE.DoubleSide, transparent:true, opacity:0.4 });
+    const ring = new THREE.Mesh(ringGeo, ringMat); ring.rotation.x = Math.PI/2; scene.add(ring);
+    const start = performance.now();
+    (function tick(){
+      const t = (performance.now()-start)*0.001;
+      uniforms.uTime.value = t;
+      uniforms.uLevel.value = 0.06 + 0.05*Math.sin(t*0.8);   // ondulación suave (idle con vida)
+      sphere.rotation.y = t*0.12; sphere.rotation.x = Math.sin(t*0.2)*0.18;
+      ring.rotation.z = t*0.3; ringMat.opacity = 0.3 + uniforms.uLevel.value*0.6;
+      renderer.render(scene, camera);
+      requestAnimationFrame(tick);
+    })();
+    window.addEventListener('resize', () => {
+      w = mount.clientWidth; h = mount.clientHeight;
+      if (w && h) { camera.aspect = w/h; camera.updateProjectionMatrix(); renderer.setSize(w, h); }
+    });
+  }
+</script>
+</body>
+</html>
