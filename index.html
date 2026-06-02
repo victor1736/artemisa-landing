@@ -157,6 +157,16 @@
   .final h2{font-size:clamp(30px,5vw,52px);max-width:18ch;margin:0 auto 18px}
   .final p{color:var(--muted);max-width:50ch;margin:0 auto 32px;font-size:17px}
 
+  /* FAQ */
+  .faq{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+  .faq details{border:1px solid var(--line);border-radius:14px;background:rgba(13,22,34,.45);overflow:hidden}
+  .faq summary{cursor:pointer;padding:18px 22px;font-family:var(--display);font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";color:var(--cyan);font-size:22px;transition:.2s}
+  .faq details[open] summary::after{transform:rotate(45deg)}
+  .faq details[open] summary{color:var(--cyan)}
+  .faq p{padding:0 22px 18px;color:var(--muted);font-size:15px}
+
   /* FOOTER */
   footer{border-top:1px solid var(--line);margin-top:90px;padding:48px 0 60px;color:var(--muted);font-size:14px}
   .foot{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
@@ -326,6 +336,23 @@
   </div>
 </section>
 
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">Preguntas frecuentes</span>
+      <h2>Lo que casi todos preguntan</h2>
+    </div>
+    <div class="faq">
+      <details class="reveal"><summary>¿Necesito internet para usarla?</summary><p>Solo la primera vez (al instalar y en el primer arranque, para descargar los modelos de IA). Después, Artemisa funciona <b>100% sin internet</b>.</p></details>
+      <details class="reveal"><summary>¿Mis datos y conversaciones están seguros?</summary><p>Sí. Todo el procesamiento ocurre <b>en tu propio PC</b>. Tus conversaciones y tu progreso <b>nunca salen de tu computador</b> ni se guardan en la nube.</p></details>
+      <details class="reveal"><summary>¿Funciona sin tarjeta gráfica NVIDIA?</summary><p>Sí, pero más lento (la IA corre en el procesador). Con una GPU NVIDIA la experiencia es mucho más fluida. Mira la tabla de requisitos arriba.</p></details>
+      <details class="reveal"><summary>Windows dice "editor desconocido", ¿es seguro?</summary><p>Sí. Es solo porque la app es nueva y aún no tiene certificado de firma (lo tendremos pronto). Haz clic en <b>"Más información → Ejecutar de todos modos"</b>.</p></details>
+      <details class="reveal"><summary>¿Puedo probarla gratis?</summary><p>Claro: el plan <b>Lite es gratis para siempre</b>, y al instalar recibes <b>14 días de Pro</b> con todo desbloqueado. Sin tarjeta, sin compromiso.</p></details>
+      <details class="reveal"><summary>¿Y cuando saquen más idiomas?</summary><p>Los idiomas nuevos (francés, portugués, italiano…) llegarán como <b>expansiones</b> que se suman a tu plan. El par inglés↔español viene incluido.</p></details>
+    </div>
+  </div>
+</section>
+
 <section id="descargar">
   <div class="wrap">
     <div class="final reveal">
@@ -348,10 +375,11 @@
     </div>
     <div>
       <div class="foot-links">
-        <a href="#">Términos</a>
-        <a href="#">Privacidad</a>
-        <a href="#">Devoluciones</a>
-        <a href="#">Propiedad intelectual</a>
+        <a href="legal/TERMINOS_Y_EULA.pdf" target="_blank" rel="noopener">Términos</a>
+        <a href="legal/POLITICA_PRIVACIDAD.pdf" target="_blank" rel="noopener">Privacidad</a>
+        <a href="legal/POLITICA_DEVOLUCIONES.pdf" target="_blank" rel="noopener">Devoluciones</a>
+        <a href="legal/PROPIEDAD_INTELECTUAL.pdf" target="_blank" rel="noopener">Propiedad intelectual</a>
+        <a href="guia/GUIA_INSTALACION.pdf" target="_blank" rel="noopener">Guía de instalación</a>
       </div>
       <small>Contacto: victoralfonsofernandezhoyos@gmail.com</small>
     </div>
