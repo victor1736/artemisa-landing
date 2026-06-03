@@ -190,7 +190,7 @@
       <a href="#features">Funciones</a>
       <a href="#planes">Planes</a>
       <a href="#requisitos">Requisitos</a>
-      <a href="https://github.com/victor1736/artemisa-assets/releases/download/app-v1.0.0/ArtemisaEnglishSetup-1.0.0.exe" target="_blank" rel="noopener" class="nav-cta">Descargar gratis</a>
+      <a href="#descargar" class="nav-cta">Descargar gratis</a>
     </div>
   </div>
 </nav>
@@ -201,11 +201,11 @@
       <div class="glow"></div>
       <div id="orb-canvas"></div>
     </div>
-    <span class="eyebrow reveal">● Tutora de inglés con IA · para Windows</span>
+    <span class="eyebrow reveal">● Tutora de inglés con IA · para Windows y Linux</span>
     <h1 class="hero reveal" data-d="1">Aprende inglés hablando con <em>Artemisa</em></h1>
     <p class="sub reveal" data-d="2">Una tutora de inteligencia artificial que te escucha, te corrige y conversa contigo por voz — funcionando <b style="color:var(--ink)">100% en tu computador</b>, sin internet y sin que tus datos salgan de tu equipo.</p>
     <div class="cta-row reveal" data-d="3">
-      <a href="https://github.com/victor1736/artemisa-assets/releases/download/app-v1.0.0/ArtemisaEnglishSetup-1.0.0.exe" target="_blank" rel="noopener" class="btn btn-primary">⬇ Descargar gratis</a>
+      <a href="#descargar" class="btn btn-primary">⬇ Descargar gratis</a>
       <a href="#planes" class="btn btn-ghost">Ver planes</a>
     </div>
     <div class="trust reveal" data-d="4">
@@ -271,7 +271,7 @@
           <li>30 minutos al día</li>
           <li>Inglés ↔ Español</li>
         </ul>
-        <a class="buy" href="https://github.com/victor1736/artemisa-assets/releases/download/app-v1.0.0/ArtemisaEnglishSetup-1.0.0.exe" target="_blank" rel="noopener" style="display:block;text-decoration:none">Descargar</a>
+        <a class="buy" href="#descargar" style="display:block;text-decoration:none">Descargar</a>
       </div>
       <div class="plan pop reveal" data-d="2">
         <span class="tag cy">Más popular</span>
@@ -359,11 +359,12 @@
       <h2>Tu profesora de inglés, en tu propio PC</h2>
       <p>Descarga Artemisa y prueba 14 días de Pro gratis. Sin nube, sin espías, sin excusas.</p>
       <div class="cta-row" style="margin-top:8px">
-        <a href="https://github.com/victor1736/artemisa-assets/releases/download/app-v1.0.0/ArtemisaEnglishSetup-1.0.0.exe" target="_blank" rel="noopener" class="btn btn-primary">⬇ Descargar para Windows</a>
+        <a id="dl-win" href="https://github.com/victor1736/artemisa-assets/releases/download/app-v1.0.0/ArtemisaEnglishSetup-1.0.0.exe" target="_blank" rel="noopener" class="btn btn-primary">⬇ Descargar para Windows</a>
         <!-- L7: botón Linux ACTIVO — AppImage en release app-linux-v1.0.0 (probado en Ubuntu + GPU NVIDIA). -->
-        <a href="https://github.com/victor1736/artemisa-assets/releases/download/app-linux-v1.0.0/Artemisa-English-1.0.0.AppImage" target="_blank" rel="noopener" class="btn btn-ghost" title="AppImage para Linux x86_64">🐧 Descargar para Linux</a>
+        <a id="dl-linux" href="https://github.com/victor1736/artemisa-assets/releases/download/app-linux-v1.0.0/Artemisa-English-1.0.0.AppImage" target="_blank" rel="noopener" class="btn btn-ghost" title="AppImage para Linux x86_64">🐧 Descargar para Linux</a>
         <a href="#planes" class="btn btn-ghost">Ver planes y precios</a>
       </div>
+      <p id="os-note" style="margin-top:12px;font-size:.9rem;color:var(--cyan);min-height:1.2em"></p>
       <p style="margin-top:14px;font-size:.85rem;opacity:.7">Instalador liviano (~85 MB). La primera vez que la abras descarga el motor de IA y los modelos (necesitas internet solo esa vez). Después funciona sin conexión.</p>
     </div>
   </div>
@@ -398,6 +399,32 @@
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   // Hero visible de una
   window.addEventListener('load',()=>{document.querySelectorAll('header .reveal').forEach(el=>el.classList.add('in'));});
+
+  // Detección de sistema operativo: resalta el botón de descarga correcto (ambos quedan visibles).
+  (function(){
+    var ua = navigator.userAgent || '';
+    var plat = navigator.platform || '';
+    var isWin = /Windows|Win32|Win64|WOW64/i.test(ua) || /Win/i.test(plat);
+    var isAndroid = /Android/i.test(ua);
+    var isLinux = (/Linux|X11/i.test(ua) || /Linux/i.test(plat)) && !isAndroid && !isWin;
+    var isMac = /Mac/i.test(ua) || /Mac/i.test(plat);
+    var win = document.getElementById('dl-win');
+    var lin = document.getElementById('dl-linux');
+    var note = document.getElementById('os-note');
+    function primary(el){ if(el){ el.classList.remove('btn-ghost'); el.classList.add('btn-primary'); } }
+    function ghost(el){ if(el){ el.classList.remove('btn-primary'); el.classList.add('btn-ghost'); } }
+    if (isLinux){
+      primary(lin); ghost(win);
+      if(note) note.textContent = '🐧 Detectamos Linux — te recomendamos la versión AppImage.';
+    } else if (isWin){
+      primary(win); ghost(lin);
+      if(note) note.textContent = '🪟 Detectamos Windows — descarga el instalador (.exe).';
+    } else if (isMac){
+      if(note){ note.style.color = 'var(--muted)'; note.textContent = 'En macOS aún no está disponible; puedes usarla en Windows o Linux (pronto para Mac).'; }
+    } else if (isAndroid){
+      if(note){ note.style.color = 'var(--muted)'; note.textContent = 'Artemisa es para computador (Windows o Linux), no para móvil.'; }
+    }
+  })();
 </script>
 
 <!-- Orbe de Artemisa: mismos shaders que la app (ArtemisaOrb) — gota de agua + anillo cyan -->
