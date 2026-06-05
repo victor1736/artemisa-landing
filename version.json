@@ -1,11 +1,11 @@
 {
     "win":  {
-                "version":  "1.1.4",
-                "url":  "https://github.com/victor1736/artemisa-assets/releases/download/app-v1.1.4/ArtemisaEnglishSetup-1.1.4.exe"
+                "version":  "1.1.5",
+                "url":  "https://github.com/victor1736/artemisa-assets/releases/download/app-v1.1.5/ArtemisaEnglishSetup-1.1.5.exe"
             },
     "linux":  {
                   "version":  "1.1.0",
                   "url":  "https://github.com/victor1736/artemisa-assets/releases/download/app-linux-v1.1.0/Artemisa-English-1.1.0.AppImage"
               },
-    "notes":  "Nuevo: sube un PDF, un articulo o un texto y practica lectura y escucha sobre el, a tu nivel."
+    "notes":  "Nuevo: panel de Memoria (lo que Artemisa recuerda de ti) y sube PDF/articulo/texto para practicar lectura y escucha a tu nivel."
 }
