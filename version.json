@@ -1,0 +1,11 @@
+{
+  "win": {
+    "version": "1.1.2",
+    "url": "https://github.com/victor1736/artemisa-assets/releases/download/app-v1.1.2/ArtemisaEnglishSetup-1.1.2.exe"
+  },
+  "linux": {
+    "version": "1.1.0",
+    "url": "https://github.com/victor1736/artemisa-assets/releases/download/app-linux-v1.1.0/Artemisa-English-1.1.0.AppImage"
+  },
+  "notes": "Hora y fecha, mejor reconocimiento de voz en otros idiomas, y actualizaciones automaticas."
+}
