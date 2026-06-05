@@ -13,18 +13,18 @@
                                },
                                {
                                    "name":  "voices",
-                                   "version":  "1",
-                                   "sha256":  "e233306fe022543e4da0cfcbf40a85e1f76cbd705cfa0ed4c15339d761b054a3",
-                                   "bytes":  841449484,
+                                   "version":  "2",
+                                   "sha256":  "f11ef88f5d4dd9d5dfa66c1fa19a643fd206e8949f4b304e7fe721786ead69bd",
+                                   "bytes":  1437971670,
                                    "parts":  [
                                                  "https://github.com/victor1736/artemisa-assets/releases/download/engine-layers-v1/voices.zip.001"
                                              ]
                                },
                                {
                                    "name":  "appcode",
-                                   "version":  "3",
-                                   "sha256":  "20d922087c2b9088b24beb2b3adc7a924557b4b5e262efa6825197b0081c3d4d",
-                                   "bytes":  83445207,
+                                   "version":  "4",
+                                   "sha256":  "21ed59c9bbb1d0609697dbd118a2d82e47953b524772f5e966140b8a9a8c7876",
+                                   "bytes":  83446121,
                                    "parts":  [
                                                  "https://github.com/victor1736/artemisa-assets/releases/download/engine-layers-v1/appcode.zip.001"
                                              ]
