@@ -1,11 +1,11 @@
 {
     "win":  {
-                "version":  "1.1.5",
-                "url":  "https://github.com/victor1736/artemisa-assets/releases/download/app-v1.1.5/ArtemisaEnglishSetup-1.1.5.exe"
+                "version":  "1.1.6",
+                "url":  "https://github.com/victor1736/artemisa-assets/releases/download/app-v1.1.6/ArtemisaEnglishSetup-1.1.6.exe"
             },
     "linux":  {
                   "version":  "1.1.0",
                   "url":  "https://github.com/victor1736/artemisa-assets/releases/download/app-linux-v1.1.0/Artemisa-English-1.1.0.AppImage"
               },
-    "notes":  "Nuevo: panel de Memoria (lo que Artemisa recuerda de ti) y sube PDF/articulo/texto para practicar lectura y escucha a tu nivel."
+    "notes":  "10 idiomas nuevos para aprender: aleman, chino, ruso, neerlandes, polaco, turco, arabe, ucraniano, griego y sueco."
 }
