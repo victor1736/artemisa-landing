@@ -22,9 +22,9 @@
                                },
                                {
                                    "name":  "appcode",
-                                   "version":  "5",
-                                   "sha256":  "6fc0a565b69ee615082189562b7d1a88607c71db406ed8e3d654aae8a1a19255",
-                                   "bytes":  83446124,
+                                   "version":  "6",
+                                   "sha256":  "ed1883a74c63b1bf3ce6cb4cc20fa3a0af2b63d92b1a73e006069544292dc879",
+                                   "bytes":  83446784,
                                    "parts":  [
                                                  "https://github.com/victor1736/artemisa-assets/releases/download/engine-layers-v1/appcode.zip.001"
                                              ]
