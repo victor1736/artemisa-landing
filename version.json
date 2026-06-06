@@ -1,11 +1,11 @@
 {
     "win":  {
-                "version":  "1.1.7",
-                "url":  "https://github.com/victor1736/artemisa-assets/releases/download/app-v1.1.7/ArtemisaEnglishSetup-1.1.7.exe"
+                "version":  "1.1.8",
+                "url":  "https://github.com/victor1736/artemisa-assets/releases/download/app-v1.1.8/ArtemisaEnglishSetup-1.1.8.exe"
             },
     "linux":  {
                   "version":  "1.1.0",
                   "url":  "https://github.com/victor1736/artemisa-assets/releases/download/app-linux-v1.1.0/Artemisa-English-1.1.0.AppImage"
               },
-    "notes":  "Selector de idiomas mas comodo: desplegables con buscador para elegir que aprender."
+    "notes":  "Interfaz disponible en 15 idiomas y Artemisa puede explicarte en tu idioma. Elige tu idioma en Ajustes."
 }
