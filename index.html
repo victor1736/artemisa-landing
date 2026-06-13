@@ -97,22 +97,6 @@
     },
     {
       "@type": "Offer",
-      "name": "Artemisa — Aula",
-      "description": "Licencia para 10 PC durante 5 años.",
-      "price": "9000000",
-      "priceCurrency": "COP",
-      "category": "Licencia educativa"
-    },
-    {
-      "@type": "Offer",
-      "name": "Artemisa — Institución",
-      "description": "Licencia para 20 PC durante 5 años.",
-      "price": "15000000",
-      "priceCurrency": "COP",
-      "category": "Licencia educativa"
-    },
-    {
-      "@type": "Offer",
       "name": "Expansión de 1 idioma",
       "price": "49900",
       "priceCurrency": "COP",
@@ -205,6 +189,36 @@
   a{color:inherit;text-decoration:none}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
   h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.04;letter-spacing:-.02em}
+
+  /* FUENTE DEL FUTURO: texto gradiente animado */
+  .glow-text{background:linear-gradient(135deg,var(--ink),var(--cyan),var(--cyan-deep),var(--ink));background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradientShift 6s ease-in-out infinite}
+  @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+  /* PARTÍCULAS DE FONDO (Jarvis HUD sutil) */
+  #particles-canvas{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.25}
+
+  /* SCANLINES futuristas */
+  .scanlines{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(52,224,255,.015) 2px,rgba(52,224,255,.015) 4px)}
+
+  /* GRID HUD overlay */
+  .hud-grid{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(52,224,255,.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(52,224,255,.04) 1px,transparent 1px);
+    background-size:60px 60px}
+
+  /* Brillo neón en hover */
+  .neon-glow{transition:.3s}
+  .neon-glow:hover{filter:drop-shadow(0 0 20px rgba(52,224,255,.4))drop-shadow(0 0 60px rgba(52,224,255,.15))}
+
+  /* Barras de datos animadas (como Jarvis) */
+  .data-line{position:fixed;left:0;z-index:-1;pointer-events:none;height:1px;width:100%;opacity:.06;
+    background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:dataSweep 8s linear infinite}
+  .data-line:nth-child(1){top:15%;animation-delay:0s}
+  .data-line:nth-child(2){top:45%;animation-delay:2.6s}
+  .data-line:nth-child(3){top:75%;animation-delay:5.2s}
+  @keyframes dataSweep{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 
   /* NAV */
   nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
@@ -414,6 +428,12 @@
 </style>
 </head>
 <body>
+<div class="scanlines"></div>
+<div class="hud-grid"></div>
+<div class="data-line"></div>
+<div class="data-line"></div>
+<div class="data-line"></div>
+<canvas id="particles-canvas"></canvas>
 
 <nav>
   <div class="wrap nav-in">
@@ -535,8 +555,6 @@
               <tr><th>PC Standard</th><td>1 equipo, offline, 1 año</td><td class="p">$290.000 /año</td></tr>
               <tr><th>PC Pro</th><td>3 equipos, offline, 1 año</td><td class="p">$590.000 /año</td></tr>
               <tr><th>PC Premium</th><td>1 equipo, de por vida</td><td class="p">$1.500.000 único</td></tr>
-              <tr><th>Aula</th><td>10 PC · 5 años</td><td class="p">$9.000.000</td></tr>
-              <tr><th>Institución</th><td>20 PC · 5 años</td><td class="p">$15.000.000</td></tr>
               <tr><th>Expansión idioma</th><td>1 idioma extra (fr/it/pt)</td><td class="p">$49.900</td></tr>
               <tr><th>Paquete 3 idiomas</th><td>Francés + italiano + portugués</td><td class="p">$99.900</td></tr>
             </tbody>
@@ -720,7 +738,6 @@
       o el
       <a href="https://checkout.wompi.co/l/kTLNjS" target="_blank" rel="noopener"><b>paquete de 3 idiomas COP 99.900</b></a>.
     </p>
-    <p class="lang-note">🏫 ¿Colegio o instituto? Licencias educativas: <b>Aula</b> (10 PC · 5 años) <b style="color:var(--cyan)">COP 9.000.000</b> · <b>Institución</b> (20 PC · 5 años) <b style="color:var(--cyan)">COP 15.000.000</b>. Escríbenos a <a href="mailto:victoralfonsofernandezhoyos@gmail.com"><b>victoralfonsofernandezhoyos@gmail.com</b></a>.</p>
   </div>
 </section>
 
@@ -804,6 +821,42 @@
 </footer>
 
 <script>
+  // Partículas HUD (Jarvis-style)
+  (function(){
+    var c = document.getElementById('particles-canvas');
+    if(!c)return;
+    var ctx = c.getContext('2d');
+    var w, h, particles = [];
+    function resize(){ w=c.width=window.innerWidth; h=c.height=window.innerHeight; }
+    window.addEventListener('resize',resize); resize();
+    var COUNT = Math.min(80, Math.floor(w*h/18000));
+    for(var i=0;i<COUNT;i++){
+      particles.push({
+        x:Math.random()*w, y:Math.random()*h, vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+        r:Math.random()*1.5+.3, a:Math.random()*.3+.1
+      });
+    }
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      for(var i=0;i<particles.length;i++){
+        var p=particles[i];
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.x<0||p.x>w)p.vx*=-1;
+        if(p.y<0||p.y>h)p.vy*=-1;
+        ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle='rgba(52,224,255,'+p.a+')';ctx.fill();
+        for(var j=i+1;j<particles.length;j++){
+          var q=particles[j];
+          var dx=p.x-q.x,dy=p.y-q.y,dist=Math.sqrt(dx*dx+dy*dy);
+          if(dist<130){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+            ctx.strokeStyle='rgba(52,224,255,'+((1-dist/130)*.1)+')';ctx.lineWidth=.5;ctx.stroke();}
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+
   // Revelado al hacer scroll
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
